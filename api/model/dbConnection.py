@@ -1,6 +1,6 @@
 
 
-from model.sqlitedb import SqliteDB
+from api.model.sqlitedb import SqliteDB
 
 class DBConnection():
     def __init__(self):

@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 
-from model.dbConnection import DBConnection
+from api.model.dbConnection import DBConnection
 
 class InviteCreator(Resource):
     dbconnection = DBConnection()
@@ -128,7 +128,7 @@ class InviteByUser(Resource):
             )
         return{"result": entries },200
 
-        
+
     def post(self,user_id):
         dados = self.path_params.parse_args()
         #todo fazer o convert de str pra int

@@ -4,7 +4,7 @@ from model.dbConnection import DBConnection
 
 from resources.Invite import InviteClaim, InviteCreator, InvitePaid, Invites, inviteFinish,InviteByUser
 
-def exec():
+def create_app():
     app = Flask(__name__)
     #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
     #app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,3 +31,4 @@ def exec():
     api.add_resource(InviteByUser, '/get_userinvite=<string:user_id>')
 
 
+    return app

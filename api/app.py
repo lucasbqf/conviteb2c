@@ -23,15 +23,17 @@ def create_app():
 
     @app.route("/")
     def index():
-        return 'hellou'
-    #api.add_resource(InviteCreator, '/create_invite')
-    #api.add_resource(InvitePaid, '/update_invite_paid')
-    #api.add_resource(InviteClaim, '/update_invite_claim')
-    #api.add_resource(inviteFinish, '/update_invite_finished')
+        return "enpoints: <br> /create_invite , /update_invite_paid, /update_invite_claim, /update_invite_finished, /get_all_invites, /get_userinvite=<string:user_id>"
 
 
-    #api.add_resource(Invites, '/get_all_invites')
-    #api.add_resource(InviteByUser, '/get_userinvite=<string:user_id>')
+    api.add_resource(InviteCreator, '/create_invite')
+    api.add_resource(InvitePaid, '/update_invite_paid')
+    api.add_resource(InviteClaim, '/update_invite_claim')
+    api.add_resource(inviteFinish, '/update_invite_finished')
+
+
+    api.add_resource(Invites, '/get_all_invites')
+    api.add_resource(InviteByUser, '/get_userinvite=<string:user_id>')
 
 
     return app

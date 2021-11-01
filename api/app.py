@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_restful import Api
-from model.dbConnection import DBConnection
+from api.model.dbConnection import DBConnection
 
-from resources.Invite import InviteClaim, InviteCreator, InvitePaid, Invites, inviteFinish,InviteByUser
+from api.resources.Invite import InviteClaim, InviteCreator, InvitePaid, Invites, inviteFinish,InviteByUser
 
 def create_app():
     app = Flask(__name__)
@@ -21,14 +21,17 @@ def create_app():
         except:
             print('banco de dados ja existe')
 
-    api.add_resource(InviteCreator, '/create_invite')
-    api.add_resource(InvitePaid, '/update_invite_paid')
-    api.add_resource(InviteClaim, '/update_invite_claim')
-    api.add_resource(inviteFinish, '/update_invite_finished')
+    @app.route("/")
+    def index():
+        return 'hellou'
+    #api.add_resource(InviteCreator, '/create_invite')
+    #api.add_resource(InvitePaid, '/update_invite_paid')
+    #api.add_resource(InviteClaim, '/update_invite_claim')
+    #api.add_resource(inviteFinish, '/update_invite_finished')
 
 
-    api.add_resource(Invites, '/get_all_invites')
-    api.add_resource(InviteByUser, '/get_userinvite=<string:user_id>')
+    #api.add_resource(Invites, '/get_all_invites')
+    #api.add_resource(InviteByUser, '/get_userinvite=<string:user_id>')
 
 
     return app

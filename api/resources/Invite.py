@@ -11,10 +11,11 @@ class InviteCreator(Resource):
     path_params.add_argument('invited_user_id')
     def post(self):
         dados = self.path_params.parse_args()
-
-        self.dbconnection.insertNewInvite(dados['user_id'],dados['invited_user_id'])
-        ##TODO fazer a implementação do banco de dados, aqui deve inserir os ids recebidos e criar status 1
-        return {'message': "user id:'{}'| invited_user_id: '{}'".format(dados['user_id'],dados['invited_user_id'])},200
+        try:
+            self.dbconnection.insertNewInvite(dados['user_id'],dados['invited_user_id'])
+            return {'message': " created invite from user_id:'{}' to invited_user_id: '{}'".format(dados['user_id'],dados['invited_user_id'])},200
+        except:
+            return {'message': " failed to save  invite from user_id:'{}' to invited_user_id: '{}' maybe invited_user_id already exists or there's a problem with the DB".format(dados['user_id'],dados['invited_user_id'])},500
 
 
 class InvitePaid(Resource):
@@ -38,11 +39,10 @@ class InviteClaim(Resource):
     dbconnection = DBConnection()
     path_params = reqparse.RequestParser()
     path_params.add_argument('invited_user_id')
-    path_params.add_argument('user_id')
     def post(self):
         dados = self.path_params.parse_args()
         try:
-            result = self.dbconnection.updateInviteToStatus3(dados['invited_user_id'],dados['user_id'])
+            result = self.dbconnection.updateInviteToStatus3(dados['invited_user_id'])
             if result== 1: 
                 return{"message":"'{}' updated successfully ".format(dados['invited_user_id'])},200
             elif result == 0 :
@@ -55,11 +55,10 @@ class inviteFinish(Resource):
     dbconnection = DBConnection()
     path_params = reqparse.RequestParser()
     path_params.add_argument('invited_user_id')
-    path_params.add_argument('user_id')
     def post(self):
         dados = self.path_params.parse_args()
         try:
-            result = self.dbconnection.updateInviteToStatus3(dados['invited_user_id'],dados['user_id'])
+            result = self.dbconnection.updateInviteToStatus4(dados['invited_user_id'])
             if result== 1: 
                 return{"message":"'{}' updated successfully ".format(dados['invited_user_id'])},200
             elif result == 0 :
@@ -112,13 +111,44 @@ class Invites(Resource):
 class InviteByUser(Resource):
     """ endpoint que retorna todos os convites de um usuario com GET,
     caso seja um Post, retorna convites do usuario com status informado na requisição"""
+    dbconnection = DBConnection()
     path_params = reqparse.RequestParser()
     path_params.add_argument('status')
+
     def get(self,user_id):
-        return{'retorna todos os invites'},200
+        results = self.dbconnection.getAllInvitesByUser(user_id)
+        entries = []
+        for result in results:
+            entries.append(
+                {
+                    'invited_user_id':result[0],
+                    'user_id':result[1],
+                    'status':result[2]
+                }
+            )
+        return{"result": entries },200
+
+        
     def post(self,user_id):
         dados = self.path_params.parse_args()
-        return{"retorna todos os invites com o status '{}".format(dados['status'])},200
+        #todo fazer o convert de str pra int
+        if dados['status'] != None: 
+            if int(dados['status']) > 0 and int(dados['status']) < 5:
+                results = self.dbconnection.getInvitesByUserAndStatus(user_id,dados['status'])
+                entries = []
+                for result in results:
+                    entries.append(
+                        {
+                            'invited_user_id':result[0],
+                            'user_id':result[1],
+                            'status':result[2]
+                        }
+                    )
+                return{"result": entries },200
+            else:
+                return {"message":"a status code is invalid"},400 
+        else:
+            return {"message":"a status code is required"},400
 
 
 

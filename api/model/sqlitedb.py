@@ -14,7 +14,7 @@ class SqliteDB():
     def insertNewInvite(self,user_uuid,invited_user_uuid):
         dbcon = sqlite3.connect('invite.db')
         cur = dbcon.cursor()
-        cur.execute("INSERT INTO invites VALUES(?,?,1)",(user_uuid,invited_user_uuid))
+        cur.execute("INSERT INTO invites VALUES(?,?,1)",(invited_user_uuid,user_uuid))
         dbcon.commit()
         dbcon.close()
     
@@ -72,12 +72,20 @@ class SqliteDB():
     def selectInvitedUser(self,invited_user_uuid):
         dbcon = sqlite3.connect('invite.db')
         cur = dbcon.cursor()
-        cur.execute("SELECT * FROM invites WHERE invited_user_uuid = ?",(invited_user_uuid,))
+        cur.execute("SELECT * FROM invites WHERE user_uuid = ?",(invited_user_uuid,))
         rows = cur.fetchall()
         dbcon.close()
         print(rows)
         return rows
 
+    def selectInvitedUserAndStatus(self,invited_user_uuid,status):
+        dbcon = sqlite3.connect('invite.db')
+        cur = dbcon.cursor()
+        cur.execute("SELECT * FROM invites WHERE user_uuid = ? AND  status = ? ",(invited_user_uuid,status))
+        rows = cur.fetchall()
+        dbcon.close()
+        print(rows)
+        return rows
 
     
 

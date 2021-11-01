@@ -42,7 +42,10 @@ class DBConnection():
         return result
 
     def getAllInvitesByUser(self,user_uuid):
-        pass
+        result = self.db.selectInvitedUser(user_uuid)
+        return result
+
     def getInvitesByUserAndStatus(self,user_uuid,status):
-        pass
+        result = self.db.selectInvitedUserAndStatus(user_uuid,status)
+        return result
 

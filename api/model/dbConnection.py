@@ -22,16 +22,16 @@ class DBConnection():
         return result
 
 
-    def updateInviteToStatus3(self,invited_user_uuid):
+    def updateInviteToStatus3(self,invited_user_uuid,pix_type,pix_info):
         '''da o update para o estatus reinvidicado, ou seja,
          após o convidado realizar o pagamento, o usuario seleciona a opção de reenvindicar premio do convite'''
-        result = self.db.updateInviteTo3(invited_user_uuid)
+        result = self.db.updateInviteTo3(invited_user_uuid,pix_type,pix_info)
         return result
 
-    def updateInviteToStatus4(self,invited_user_uuid):
+    def updateInviteToStatus4(self,invited_user_uuid,payer_uuid,receipt):
         '''da o update para o estatus finalizado, ou seja,
          após o usuario realizar a renvindicação, o administrativo realiza o pagamento e alterna o status para finalizado'''
-        result = self.db.updateInviteTo4(invited_user_uuid)
+        result = self.db.updateInviteTo4(invited_user_uuid,payer_uuid,receipt )
         return result
 
     def getAllInvites(self):

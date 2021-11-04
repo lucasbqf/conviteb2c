@@ -1,0 +1,12 @@
+
+caso nao tenha python:
+sudo apt-get python
+         (ou python3)
+
+sudo pip install flask_restfull
+sudo pip install gunicorn
+
+
+rodar esse comando na pasta raiz do projeto (/conviteb2c)
+
+nohup gunicorn -w 2 "api.app:create_app()" -b 0.0.0.0:5000 >/dev/null 2>&1 & #

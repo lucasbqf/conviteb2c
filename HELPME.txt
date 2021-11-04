@@ -1,3 +1,6 @@
+entra na pasta desejada e roda:
+git clone https://github.com/lucasbqf/conviteb2c.git
+usuario e senha e fechou
 
 caso nao tenha python:
 sudo apt-get python

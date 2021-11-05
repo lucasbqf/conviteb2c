@@ -1,1 +1,31 @@
-sudo gunicorn -w 4 "api.app:create_app()" -b 0.0.0.0:5000
+#para criar o arquivo do serviço
+#sudo nano /etc/systemd/system/conviteb2c.service
+#
+#
+#
+# alterar o user de acordo  com o usuario e o caminho de acordo com o caminho de instalação
+
+
+
+[Unit]
+
+Description=Gunicorn instance to serve the conviteb2c app
+
+After=network.target
+
+
+[Service]
+
+User=bitnami
+
+WorkingDirectory=/usr/bin/conviteb2c/
+
+#Environment="PATH=/usr/bin/conviteb2c/venv/bin"
+
+#ExecStart=/usr/bin/conviteb2c/venv/bin gunicorn -w 2 "api.app:create_app()" -b 0.0.0.0:5000
+
+ExecStart=/opt/bitnami/python/bin/gunicorn -w 2 "api.app:create_app()" -b 0.0.0.0:5000
+
+[Install]
+
+WantedBy=multi-user.target

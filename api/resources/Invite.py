@@ -12,10 +12,13 @@ class InviteCreator(Resource):
     path_params.add_argument('invited_user_id',required = True, help= "invited_user_id cannot be null")
     def post(self):
         dados = self.path_params.parse_args()
+        print(dados['user_id'])
+        print(dados['invited_user_id'])
         try:
             self.dbconnection.insertNewInvite(dados['user_id'],dados['invited_user_id'])
             return {'message': " created invite from user_id:'{}' to invited_user_id: '{}'".format(dados['user_id'],dados['invited_user_id'])},200
         except Exception as error:
+            print(error)
             return {'message': " failed to save  invite from user_id:'{}' to invited_user_id: '{}' maybe invited_user_id already exists or there's a problem with the DB \n {}".format(dados['user_id'],dados['invited_user_id'],error)},500
 
 
@@ -27,13 +30,17 @@ class InvitePaid(Resource):
     def post(self):
         dados = self.path_params.parse_args()
         try:
+            print("tentando update no usuario ="+ dados['invited_user_id'])
             result = self.dbconnection.updateInviteToStatus2(dados['invited_user_id'])
             if result== 1: 
+                print("update ok")
                 return{"message":"'{}' updated successfully ".format(dados['invited_user_id'])},200
             elif result == 0 :
+                print("usuario nao existe ou nao pode ser dado update")
                 return{"message":"'{}' don't exist or cannot be updated to status 2".format(dados['invited_user_id'])},404
                 
         except Exception as error:
+            print(error)
             return {"message": "Error:{}".format (error)},500
 
 class InviteClaim(Resource):
